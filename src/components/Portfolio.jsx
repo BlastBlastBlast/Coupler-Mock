@@ -533,7 +533,15 @@ function Portfolio() {
                 </div>
                 <h3 className="contribution-title">{contribution.title}</h3>
                 <div className="contribution-role-info">
-                  <p className="contribution-role">{contribution.role}{contribution.subRole && <span className="role-separator"> • </span>}<span className="contribution-subrole">{contribution.subRole}</span>}</p>
+                  <p className="contribution-role">
+                    {contribution.role}
+                    {contribution.subRole && (
+                      <>
+                        <span className="role-separator"> • </span>
+                        <span className="contribution-subrole">{contribution.subRole}</span>
+                      </>
+                    )}
+                  </p>
                 </div>
                 {contribution.scope && (
                   <p className="contribution-scope">📍 {contribution.scope}</p>
