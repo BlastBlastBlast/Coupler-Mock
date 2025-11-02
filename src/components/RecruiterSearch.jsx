@@ -6,7 +6,8 @@ function RecruiterSearch() {
   const [selectedFilters, setSelectedFilters] = useState({
     role: 'all',
     verified: 'all',
-    location: 'all'
+    country: 'all',
+    city: 'all'
   });
 
   const developers = [
@@ -15,6 +16,8 @@ function RecruiterSearch() {
       name: "Alex Chen",
       role: "Game Designer & Developer",
       location: "Oslo, Norway",
+      country: "Norway",
+      city: "Oslo",
       verified: "system",
       titlesShipped: 3,
       languages: ["C#", "C++", "Python"],
@@ -26,6 +29,8 @@ function RecruiterSearch() {
       name: "Sarah Martinez",
       role: "3D Artist & Technical Artist",
       location: "Berlin, Germany",
+      country: "Germany",
+      city: "Berlin",
       verified: "peer",
       titlesShipped: 5,
       languages: ["HLSL", "Python"],
@@ -37,6 +42,8 @@ function RecruiterSearch() {
       name: "James Park",
       role: "Gameplay Programmer",
       location: "Seoul, South Korea",
+      country: "South Korea",
+      city: "Seoul",
       verified: "system",
       titlesShipped: 2,
       languages: ["C++", "C#"],
@@ -48,6 +55,8 @@ function RecruiterSearch() {
       name: "Emma Thompson",
       role: "UI/UX Designer",
       location: "London, UK",
+      country: "United Kingdom",
+      city: "London",
       verified: "unverified",
       titlesShipped: 1,
       languages: ["JavaScript", "C#"],
@@ -111,6 +120,65 @@ function RecruiterSearch() {
             </div>
 
             <div className="filter-card">
+              <h3 className="filter-title">Location</h3>
+              <div className="filter-options">
+                <button 
+                  className={`filter-option ${selectedFilters.country === 'all' ? 'active' : ''}`}
+                  onClick={() => setSelectedFilters({...selectedFilters, country: 'all', city: 'all'})}
+                >
+                  All Countries
+                </button>
+                <button 
+                  className={`filter-option ${selectedFilters.country === 'Norway' ? 'active' : ''}`}
+                  onClick={() => setSelectedFilters({...selectedFilters, country: 'Norway', city: 'all'})}
+                >
+                  Norway
+                </button>
+                <button 
+                  className={`filter-option ${selectedFilters.country === 'Germany' ? 'active' : ''}`}
+                  onClick={() => setSelectedFilters({...selectedFilters, country: 'Germany', city: 'all'})}
+                >
+                  Germany
+                </button>
+                <button 
+                  className={`filter-option ${selectedFilters.country === 'United Kingdom' ? 'active' : ''}`}
+                  onClick={() => setSelectedFilters({...selectedFilters, country: 'United Kingdom', city: 'all'})}
+                >
+                  United Kingdom
+                </button>
+                <button 
+                  className={`filter-option ${selectedFilters.country === 'South Korea' ? 'active' : ''}`}
+                  onClick={() => setSelectedFilters({...selectedFilters, country: 'South Korea', city: 'all'})}
+                >
+                  South Korea
+                </button>
+              </div>
+              {selectedFilters.country !== 'all' && (
+                <div className="filter-options" style={{marginTop: '10px'}}>
+                  <button 
+                    className={`filter-option ${selectedFilters.city === 'all' ? 'active' : ''}`}
+                    onClick={() => setSelectedFilters({...selectedFilters, city: 'all'})}
+                    style={{fontSize: '12px', padding: '6px 12px'}}
+                  >
+                    All Cities
+                  </button>
+                  {developers
+                    .filter(d => d.country === selectedFilters.country)
+                    .map((dev, idx) => (
+                      <button
+                        key={idx}
+                        className={`filter-option ${selectedFilters.city === dev.city ? 'active' : ''}`}
+                        onClick={() => setSelectedFilters({...selectedFilters, city: dev.city})}
+                        style={{fontSize: '12px', padding: '6px 12px'}}
+                      >
+                        {dev.city}
+                      </button>
+                    ))}
+                </div>
+              )}
+            </div>
+
+            <div className="filter-card">
               <h3 className="filter-title">Experience</h3>
               <div className="range-filter">
                 <label>Titles Shipped: 0+</label>
@@ -122,7 +190,14 @@ function RecruiterSearch() {
 
           <div className="developers-list">
             <div className="results-header">
-              <span className="results-count">{developers.length} developers found</span>
+              <span className="results-count">
+                {developers.filter(dev => {
+                  if (selectedFilters.country !== 'all' && dev.country !== selectedFilters.country) return false;
+                  if (selectedFilters.city !== 'all' && dev.city !== selectedFilters.city) return false;
+                  if (selectedFilters.role !== 'all' && !dev.role.toLowerCase().includes(selectedFilters.role.toLowerCase())) return false;
+                  return true;
+                }).length} developers found
+              </span>
               <select className="sort-select">
                 <option>Relevance</option>
                 <option>Most Verified</option>
@@ -131,7 +206,12 @@ function RecruiterSearch() {
               </select>
             </div>
 
-            {developers.map(dev => {
+            {developers.filter(dev => {
+              if (selectedFilters.country !== 'all' && dev.country !== selectedFilters.country) return false;
+              if (selectedFilters.city !== 'all' && dev.city !== selectedFilters.city) return false;
+              if (selectedFilters.role !== 'all' && !dev.role.toLowerCase().includes(selectedFilters.role.toLowerCase())) return false;
+              return true;
+            }).map(dev => {
               const verification = getVerificationBadge(dev.verified);
               return (
                 <div key={dev.id} className="developer-card">

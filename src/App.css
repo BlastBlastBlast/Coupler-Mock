@@ -491,11 +491,37 @@
   font-weight: 600;
 }
 
+.contribution-role-info {
+  margin-bottom: 8px;
+}
+
 .contribution-role {
   color: var(--steam-light-blue);
   font-size: 14px;
-  margin-bottom: 10px;
   font-weight: 500;
+  display: inline;
+}
+
+.role-separator {
+  color: var(--steam-text-secondary);
+  margin: 0 4px;
+}
+
+.contribution-subrole {
+  color: var(--steam-text-secondary);
+  font-weight: 400;
+}
+
+.contribution-scope {
+  color: var(--steam-text);
+  font-size: 13px;
+  margin-bottom: 10px;
+  font-style: italic;
+  line-height: 1.5;
+  background: rgba(103, 193, 244, 0.05);
+  padding: 8px 12px;
+  border-radius: 6px;
+  border-left: 3px solid rgba(103, 193, 244, 0.3);
 }
 
 .contribution-description {
@@ -682,6 +708,52 @@
   left: 0;
   color: var(--steam-light-blue);
   font-weight: bold;
+}
+
+/* Artifacts Section */
+.artifacts-section {
+  margin-top: 20px;
+}
+
+.artifacts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.artifact-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: var(--steam-card-bg);
+  border: 1px solid rgba(103, 193, 245, 0.2);
+  border-radius: 6px;
+  text-decoration: none;
+  color: var(--steam-text);
+  transition: all 0.2s;
+}
+
+.artifact-link:hover {
+  background: rgba(103, 193, 244, 0.1);
+  border-color: var(--steam-light-blue);
+  transform: translateX(3px);
+}
+
+.artifact-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.artifact-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--steam-light-blue);
+}
+
+.artifact-link:hover .artifact-label {
+  color: var(--steam-light-blue);
 }
 
 /* Technical Stack Section */
@@ -1952,6 +2024,118 @@
   font-size: 13px;
 }
 
+/* Job Brief Styles */
+.job-brief {
+  border: 2px solid rgba(103, 193, 244, 0.3);
+  background: linear-gradient(135deg, var(--steam-dark) 0%, rgba(103, 193, 244, 0.05) 100%);
+}
+
+.brief-badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: rgba(103, 193, 244, 0.2);
+  border: 1px solid rgba(103, 193, 244, 0.4);
+  color: var(--steam-light-blue);
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.job-card {
+  position: relative;
+}
+
+.brief-details {
+  margin: 20px 0;
+  padding: 20px;
+  background: var(--steam-card-bg);
+  border-radius: 6px;
+  border: 1px solid rgba(103, 193, 245, 0.1);
+}
+
+.brief-section {
+  margin-bottom: 20px;
+}
+
+.brief-section:last-child {
+  margin-bottom: 0;
+}
+
+.brief-label {
+  font-size: 13px;
+  color: var(--steam-light-blue);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.brief-role-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brief-role {
+  color: var(--steam-text);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.brief-subrole {
+  color: var(--steam-text-secondary);
+  font-size: 14px;
+}
+
+.brief-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.brief-list li {
+  color: var(--steam-text);
+  font-size: 14px;
+  padding: 6px 0;
+  padding-left: 20px;
+  position: relative;
+}
+
+.brief-list li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--steam-light-blue);
+  font-weight: bold;
+}
+
+.brief-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tool-tag {
+  padding: 6px 12px;
+  background: rgba(92, 126, 16, 0.2);
+  border: 1px solid rgba(164, 192, 57, 0.3);
+  border-radius: 12px;
+  color: #a4c039;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.brief-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 /* Recruiter Search Styles */
 .recruiter-section {
   background: var(--steam-card-bg);
@@ -2220,6 +2404,146 @@
   border-top: 1px solid rgba(103, 193, 245, 0.1);
 }
 
+/* Case Studies Styles */
+.case-studies-section {
+  background: var(--steam-card-bg);
+  border: 1px solid rgba(103, 193, 245, 0.1);
+  border-radius: 8px;
+  padding: 30px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.section-subtitle {
+  color: var(--steam-text-secondary);
+  font-size: 14px;
+  margin-top: 5px;
+  margin-bottom: 25px;
+}
+
+.case-studies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 25px;
+  margin-top: 25px;
+}
+
+.case-study-card {
+  background: var(--steam-dark);
+  border: 1px solid rgba(103, 193, 245, 0.1);
+  border-radius: 8px;
+  padding: 25px;
+  transition: all 0.2s;
+}
+
+.case-study-card:hover {
+  border-color: rgba(103, 193, 245, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.case-study-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(103, 193, 245, 0.1);
+}
+
+.case-study-title {
+  font-size: 18px;
+  color: var(--steam-text);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.case-study-meta {
+  display: flex;
+  gap: 8px;
+  color: var(--steam-text-secondary);
+  font-size: 13px;
+}
+
+.case-study-studio {
+  color: var(--steam-light-blue);
+  font-weight: 500;
+}
+
+.case-study-creator {
+  color: var(--steam-text);
+}
+
+.case-study-date {
+  color: var(--steam-text-secondary);
+}
+
+.case-study-rating {
+  font-size: 16px;
+  color: #ffb838;
+}
+
+.case-study-role {
+  color: var(--steam-light-blue);
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+.case-study-brief,
+.case-study-outcome,
+.case-study-feedback {
+  color: var(--steam-text);
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.case-study-brief strong,
+.case-study-outcome strong,
+.case-study-feedback strong {
+  color: var(--steam-light-blue);
+}
+
+.case-study-feedback {
+  font-style: italic;
+  padding: 12px;
+  background: rgba(103, 193, 244, 0.05);
+  border-left: 3px solid rgba(103, 193, 244, 0.3);
+  border-radius: 4px;
+}
+
+.case-study-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.case-study-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.case-study-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 15px;
+  border-top: 1px solid rgba(103, 193, 245, 0.1);
+  font-size: 13px;
+}
+
+.case-study-duration {
+  color: var(--steam-text-secondary);
+}
+
+.case-study-success {
+  color: #a4c039;
+  font-weight: 600;
+}
+
 /* Showcase Styles */
 .showcase-section {
   background: var(--steam-card-bg);
@@ -2445,5 +2769,17 @@
 @media (max-width: 768px) {
   .showcase-grid {
     grid-template-columns: 1fr;
+  }
+
+  .case-studies-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .brief-details {
+    padding: 15px;
+  }
+
+  .brief-section {
+    margin-bottom: 15px;
   }
 }

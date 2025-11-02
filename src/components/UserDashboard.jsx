@@ -10,6 +10,8 @@ function UserDashboard() {
     type: 'Full Release',
     year: new Date().getFullYear(),
     role: '',
+    subRole: '',
+    scope: '',
     description: '',
     detailedDescription: '',
     teamSize: '',
@@ -18,10 +20,14 @@ function UserDashboard() {
     linesOfCode: '',
     technologies: [],
     tags: [],
-    keyContributions: ['']
+    keyContributions: [''],
+    artifacts: []
   });
   const [techInput, setTechInput] = useState('');
   const [tagInput, setTagInput] = useState('');
+  const [artifactType, setArtifactType] = useState('repo');
+  const [artifactLabel, setArtifactLabel] = useState('');
+  const [artifactUrl, setArtifactUrl] = useState('');
 
   const handleEdit = (contribution) => {
     setEditingContribution(contribution);
@@ -46,6 +52,16 @@ function UserDashboard() {
     if (tag && !formData.tags.includes(tag)) {
       setFormData({...formData, tags: [...formData.tags, tag]});
       setTagInput('');
+    }
+  };
+
+  const handleArtifactAdd = () => {
+    const label = artifactLabel.trim();
+    const url = artifactUrl.trim();
+    if (label && url) {
+      setFormData({...formData, artifacts: [...formData.artifacts, { type: artifactType, label, url }]});
+      setArtifactLabel('');
+      setArtifactUrl('');
     }
   };
 
@@ -235,14 +251,49 @@ function UserDashboard() {
                         />
                       </div>
                       <div className="form-group">
-                        <label>Your Role <span className="required">*</span></label>
+                        <label>Role (Primary Craft Lane) <span className="required">*</span></label>
+                        <select 
+                          className="form-input"
+                          value={formData.role}
+                          onChange={(e) => setFormData({...formData, role: e.target.value})}
+                        >
+                          <option value="">Select Role</option>
+                          <option>Game Designer</option>
+                          <option>Gameplay Programmer</option>
+                          <option>Technical Artist</option>
+                          <option>Animator</option>
+                          <option>Artist</option>
+                          <option>Composer</option>
+                          <option>Audio Designer</option>
+                          <option>Writer</option>
+                          <option>QA Specialist</option>
+                          <option>Solo Developer</option>
+                        </select>
+                        <div className="form-hint">Your primary craft lane (e.g., Animator, Gameplay Programmer, Composer)</div>
+                      </div>
+                    </div>
+                    <div className="form-row">
+                      <div className="form-group">
+                        <label>Sub-Role (Specialization) <span className="required">*</span></label>
                         <input 
                           type="text" 
                           className="form-input" 
-                          placeholder="e.g., Lead Designer, Gameplay Programmer"
-                          value={formData.role}
-                          onChange={(e) => setFormData({...formData, role: e.target.value})}
+                          placeholder="e.g., First-person animation, Combat systems, Implementation & mixing"
+                          value={formData.subRole}
+                          onChange={(e) => setFormData({...formData, subRole: e.target.value})}
                         />
+                        <div className="form-hint">Your specialization within the role (e.g., Combat systems, Narrative systems, Shader programming)</div>
+                      </div>
+                      <div className="form-group">
+                        <label>Scope (What You Actually Did) <span className="required">*</span></label>
+                        <textarea 
+                          className="form-textarea" 
+                          rows="3"
+                          placeholder="e.g., Built reload state machine, tuned transitions, met 60 fps budget"
+                          value={formData.scope}
+                          onChange={(e) => setFormData({...formData, scope: e.target.value})}
+                        ></textarea>
+                        <div className="form-hint">Concisely describe what you actually did - specific systems, features, or accomplishments</div>
                       </div>
                     </div>
                   </div>
@@ -356,7 +407,7 @@ function UserDashboard() {
 
                   <div className="form-section">
                     <h3 className="form-section-title">Developer Tags <span className="required">*</span></h3>
-                    <div className="form-hint">Use game developer jargon tags (e.g., #physics, #networking, #narrative-design)</div>
+                    <div className="form-hint">Use game developer jargon tags (e.g., #gunplay, #reload-animations, #jiggle-physics, #flight-physics, #networking, #combat-systems)</div>
                     <div className="tag-input-group">
                       <input 
                         type="text" 
@@ -421,6 +472,59 @@ function UserDashboard() {
                     >
                       + Add Another Contribution
                     </button>
+                  </div>
+
+                  <div className="form-section">
+                    <h3 className="form-section-title">Artifacts & Proof Links</h3>
+                    <div className="form-hint">Link to repositories, videos, Workshop items, ArtStation, or 3D models that prove your contribution</div>
+                    <div className="tag-input-group">
+                      <select 
+                        className="form-input" 
+                        style={{maxWidth: '150px'}}
+                        value={artifactType}
+                        onChange={(e) => setArtifactType(e.target.value)}
+                      >
+                        <option value="repo">Repository</option>
+                        <option value="video">Video</option>
+                        <option value="workshop">Workshop</option>
+                        <option value="artstation">ArtStation</option>
+                        <option value="model">3D Model</option>
+                      </select>
+                      <input 
+                        type="text" 
+                        className="form-input tag-input" 
+                        placeholder="Label (e.g., Flight Physics)"
+                        value={artifactLabel}
+                        onChange={(e) => setArtifactLabel(e.target.value)}
+                        style={{flex: 1}}
+                      />
+                      <input 
+                        type="text" 
+                        className="form-input tag-input" 
+                        placeholder="URL"
+                        value={artifactUrl}
+                        onChange={(e) => setArtifactUrl(e.target.value)}
+                        style={{flex: 2}}
+                      />
+                      <button type="button" className="btn-secondary" onClick={handleArtifactAdd}>Add</button>
+                    </div>
+                    <div className="tag-list">
+                      {formData.artifacts.map((artifact, idx) => (
+                        <span key={idx} className="form-tag">
+                          {artifact.type === 'repo' && '📦'}
+                          {artifact.type === 'video' && '🎬'}
+                          {artifact.type === 'workshop' && '🎮'}
+                          {artifact.type === 'artstation' && '🎨'}
+                          {artifact.type === 'model' && '🎭'}
+                          {' '}{artifact.label}
+                          <button 
+                            type="button"
+                            className="tag-remove"
+                            onClick={() => setFormData({...formData, artifacts: formData.artifacts.filter((_, i) => i !== idx)})}
+                          >×</button>
+                        </span>
+                      ))}
+                    </div>
                   </div>
 
                   <div className="form-actions">

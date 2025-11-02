@@ -30,7 +30,9 @@ const mockPortfolio = {
       id: 1,
       title: "Cyberpunk Horizons",
       type: "Full Release",
-      role: "Lead Designer",
+      role: "Game Designer",
+      subRole: "Narrative Systems",
+      scope: "Built branching dialogue system, architected quest generation, implemented conditional responses and character relationships",
       year: 2023,
       status: "shipped",
       verificationLevel: "system-verified",
@@ -38,7 +40,7 @@ const mockPortfolio = {
       description: "Open-world RPG featuring dynamic narrative systems",
       technologies: ["Unity", "C#", "Blender", "Steam SDK"],
       players: "50K+",
-      tags: ["#narrative-design", "#open-world", "#quest-systems", "#dialogue", "#procedural-content"],
+      tags: ["#narrative-design", "#quest-systems", "#dialogue", "#procedural-content", "#branching-narrative"],
       teamSize: "12 team members",
       duration: "18 months",
       responsibilities: "Lead designer, narrative systems architect",
@@ -49,13 +51,20 @@ const mockPortfolio = {
         "Quest generation and procedural content systems",
         "Steam integration for cloud saves and achievements",
         "Led team of 4 designers in systems design"
+      ],
+      artifacts: [
+        { type: "repo", label: "Narrative System", url: "https://github.com/alexchen/narrative-system" },
+        { type: "repo", label: "Quest Generator", url: "https://github.com/alexchen/procedural-quest-generator" },
+        { type: "video", label: "Narrative Demo", url: "https://youtube.com/watch?v=demo1" }
       ]
     },
     {
       id: 2,
       title: "Pixel Quest",
       type: "Workshop Asset",
-      role: "Asset Creator",
+      role: "Artist",
+      subRole: "2D Asset Creation",
+      scope: "Created 50+ hand-drawn sprite sheets, designed 8-character animation sets, built modular sprite system with consistent grid",
       year: 2022,
       status: "workshop",
       downloads: 1250,
@@ -73,6 +82,10 @@ const mockPortfolio = {
         "8-character animation sets",
         "Environment tileset (20+ tiles)",
         "Steam Workshop integration"
+      ],
+      artifacts: [
+        { type: "workshop", label: "Steam Workshop", url: "https://steamcommunity.com/sharedfiles/filedetails/?id=123456" },
+        { type: "artstation", label: "Asset Showcase", url: "https://artstation.com/artwork/pixel-quest" }
       ]
     },
     {
@@ -80,13 +93,15 @@ const mockPortfolio = {
       title: "Neon Skies",
       type: "Early Access",
       role: "Gameplay Programmer",
+      subRole: "Combat Systems & Physics",
+      scope: "Built custom flight physics with momentum/inertia, implemented procedural mission generator, created 16-player netcode with lag compensation",
       year: 2023,
       status: "earlyAccess",
       verificationLevel: "peer-verified",
       verifiedBy: "Project Owner",
       description: "Fast-paced aerial combat game with procedural generation",
       technologies: ["Unreal Engine", "C++", "Blueprints", "Steam SDK"],
-      tags: ["#gameplay-programming", "#flight-physics", "#procedural-generation", "#multiplayer", "#combat-systems"],
+      tags: ["#gameplay-programming", "#flight-physics", "#networking", "#combat-systems", "#procedural-generation"],
       teamSize: "8 team members",
       duration: "Ongoing (12+ months)",
       responsibilities: "Gameplay systems, physics, netcode",
@@ -97,6 +112,10 @@ const mockPortfolio = {
         "Procedural mission generator",
         "Multiplayer netcode architecture",
         "AI director and difficulty balancing"
+      ],
+      artifacts: [
+        { type: "repo", label: "Flight Physics", url: "https://github.com/alexchen/flight-physics-unreal" },
+        { type: "video", label: "Physics Breakdown", url: "https://youtube.com/watch?v=demo2" }
       ]
     },
     {
@@ -104,6 +123,8 @@ const mockPortfolio = {
       title: "Playtest Program - Strategy Games",
       type: "Test Contribution",
       role: "QA Specialist",
+      subRole: "Balance & Gameplay Analysis",
+      scope: "Analyzed 50+ unit types for balance, created economy curve validations, reported 150+ bugs with fixes, built automated test suite",
       year: 2022,
       status: "testing",
       hours: 45,
@@ -121,6 +142,9 @@ const mockPortfolio = {
         "Economy curve validation and tuning",
         "150+ bug reports with fixes",
         "Automated testing suite"
+      ],
+      artifacts: [
+        { type: "repo", label: "Test Suite", url: "https://github.com/alexchen/automated-testing-suite" }
       ]
     },
     {
@@ -128,6 +152,8 @@ const mockPortfolio = {
       title: "Retro Arcade Collection",
       type: "Full Release",
       role: "Solo Developer",
+      subRole: "Full Stack Development",
+      scope: "Implemented 5 complete games with custom physics, built Steam Cloud saves, created unified scoring system, optimized for 60 FPS",
       year: 2021,
       status: "shipped",
       verificationLevel: "system-verified",
@@ -146,6 +172,10 @@ const mockPortfolio = {
         "Steam API integration and achievements",
         "Pixel art assets (200+ sprites)",
         "Full lifecycle from concept to launch"
+      ],
+      artifacts: [
+        { type: "repo", label: "Game Source", url: "https://github.com/alexchen/retro-arcade" },
+        { type: "video", label: "Gameplay Trailer", url: "https://youtube.com/watch?v=demo3" }
       ]
     }
   ],
@@ -255,6 +285,38 @@ const mockPortfolio = {
       type: "Character Model"
     }
   ],
+  caseStudies: [
+    {
+      id: 1,
+      title: "Combat Systems Collaboration - Cyber Studios",
+      studio: "Cyber Studios",
+      creator: "Alex Chen",
+      role: "Gameplay Programmer • Combat Systems",
+      brief: "Build reload state machine and combat systems",
+      outcome: "Successfully delivered reload state machine with smooth animations. Re-hired for next project.",
+      duration: "8 weeks",
+      technologies: ["Unity", "C++"],
+      tags: ["#combat-systems", "#gunplay", "#state-machines"],
+      rating: 5,
+      feedback: "Excellent work on the combat systems. Delivered ahead of schedule and exceeded expectations.",
+      completed: "2024-01"
+    },
+    {
+      id: 2,
+      title: "First-Person Animation - StoryForge Games",
+      studio: "StoryForge Games",
+      creator: "Sarah Martinez",
+      role: "Animator • First-person Animation",
+      brief: "Create first-person reload animations and transitions",
+      outcome: "Delivered high-quality animation sequences that improved player experience. Currently working on follow-up project.",
+      duration: "6 weeks",
+      technologies: ["Unreal Engine", "Blender"],
+      tags: ["#reload-animations", "#first-person", "#animation"],
+      rating: 5,
+      feedback: "Professional work and great communication throughout the project. Highly recommend.",
+      completed: "2023-12"
+    }
+  ],
   techVideos: [
     {
       id: 1,
@@ -292,7 +354,7 @@ const mockPortfolio = {
 };
 
 function Portfolio() {
-  const { user, metrics, contributions, technicalStack, githubRepos, artstationWork, threeDModels, techVideos } = mockPortfolio;
+  const { user, metrics, contributions, technicalStack, githubRepos, artstationWork, threeDModels, techVideos, caseStudies } = mockPortfolio;
   const [allExpanded, setAllExpanded] = useState(false);
 
   const toggleAllCards = () => {
@@ -436,7 +498,12 @@ function Portfolio() {
                   </div>
                 </div>
                 <h3 className="contribution-title">{contribution.title}</h3>
-                <p className="contribution-role">{contribution.role}</p>
+                <div className="contribution-role-info">
+                  <p className="contribution-role">{contribution.role}{contribution.subRole && <span className="role-separator"> • </span>}<span className="contribution-subrole">{contribution.subRole}</span>}</p>
+                </div>
+                {contribution.scope && (
+                  <p className="contribution-scope">📍 {contribution.scope}</p>
+                )}
                 <p className="contribution-description">{contribution.description}</p>
                 <div className="expand-indicator">
                   {allExpanded ? '▼' : '▶'}
@@ -541,6 +608,33 @@ function Portfolio() {
                       </ul>
                     </div>
                   )}
+
+                  {/* Artifacts (Proof Links) */}
+                  {contribution.artifacts && contribution.artifacts.length > 0 && (
+                    <div className="artifacts-section">
+                      <h4 className="detail-title">🔗 Artifacts & Proof</h4>
+                      <div className="artifacts-grid">
+                        {contribution.artifacts.map((artifact, idx) => (
+                          <a 
+                            key={idx} 
+                            href={artifact.url} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className={`artifact-link artifact-${artifact.type}`}
+                          >
+                            <span className="artifact-icon">
+                              {artifact.type === 'repo' && '📦'}
+                              {artifact.type === 'video' && '🎬'}
+                              {artifact.type === 'workshop' && '🎮'}
+                              {artifact.type === 'artstation' && '🎨'}
+                              {artifact.type === 'model' && '🎭'}
+                            </span>
+                            <span className="artifact-label">{artifact.label}</span>
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -638,6 +732,59 @@ function Portfolio() {
           ))}
         </div>
       </section>
+
+      {/* Case Studies */}
+      {caseStudies && caseStudies.length > 0 && (
+        <section className="case-studies-section">
+          <h2 className="section-title">📚 Case Studies - Successful Collaborations</h2>
+          <p className="section-subtitle">Real projects completed through Coupler</p>
+          <div className="case-studies-grid">
+            {caseStudies.map(study => (
+              <div key={study.id} className="case-study-card">
+                <div className="case-study-header">
+                  <div>
+                    <h3 className="case-study-title">{study.title}</h3>
+                    <div className="case-study-meta">
+                      <span className="case-study-studio">{study.studio}</span>
+                      <span>•</span>
+                      <span className="case-study-creator">{study.creator}</span>
+                      <span>•</span>
+                      <span className="case-study-date">{study.completed}</span>
+                    </div>
+                  </div>
+                  <div className="case-study-rating">
+                    {'⭐'.repeat(study.rating)}
+                  </div>
+                </div>
+                <div className="case-study-role">{study.role}</div>
+                <div className="case-study-brief">
+                  <strong>Brief:</strong> {study.brief}
+                </div>
+                <div className="case-study-outcome">
+                  <strong>Outcome:</strong> {study.outcome}
+                </div>
+                <div className="case-study-feedback">
+                  <strong>Feedback:</strong> "{study.feedback}"
+                </div>
+                <div className="case-study-tech">
+                  {study.technologies.map((tech, idx) => (
+                    <span key={idx} className="tech-badge">{tech}</span>
+                  ))}
+                </div>
+                <div className="case-study-tags">
+                  {study.tags.map((tag, idx) => (
+                    <span key={idx} className="tag">{tag}</span>
+                  ))}
+                </div>
+                <div className="case-study-footer">
+                  <span className="case-study-duration">⏱️ {study.duration}</span>
+                  <span className="case-study-success">✓ Successfully Completed</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Tech Video Demos */}
       <section className="videos-section">

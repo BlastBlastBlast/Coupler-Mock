@@ -7,51 +7,70 @@ function JobListings() {
   const jobListings = [
     {
       id: 1,
-      title: "Senior Gameplay Programmer",
+      title: "Combat Systems Programmer",
       company: "Cyber Studios",
       location: "Remote",
-      type: "Full-time",
+      type: "Contract",
       posted: "2 days ago",
-      description: "Seeking experienced gameplay programmer for AAA action RPG. Must have experience with Unity and C++.",
-      requirements: ["C++", "Unity", "5+ years experience"],
+      description: "Build reload state machine and combat systems for action RPG",
+      role: "Gameplay Programmer",
+      subRole: "Combat Systems",
+      deliverables: ["Reload state machine system", "Combat animation integration", "Weapon handling mechanics"],
+      tools: ["Unity", "C++", "Animation Systems"],
+      requiredEvidence: ["Previous combat systems work", "Code samples or repos", "Technical demo video"],
+      tags: ["#combat-systems", "#gunplay", "#state-machines"],
       salary: "$80k - $120k",
-      verified: true
+      verified: true,
+      isBrief: true
     },
     {
       id: 2,
-      title: "Narrative Designer",
+      title: "First-Person Animation Specialist",
       company: "StoryForge Games",
-      location: "San Francisco, CA",
-      type: "Full-time",
+      location: "Remote",
+      type: "Contract",
       posted: "5 days ago",
-      description: "Join our team working on an innovative narrative-driven adventure game.",
-      requirements: ["Narrative Design", "Writing", "3+ years experience"],
+      description: "Create first-person reload animations and transitions for FPS game",
+      role: "Animator",
+      subRole: "First-person Animation",
+      deliverables: ["Reload animation sequences", "Smooth transition system", "Animation state machine setup"],
+      tools: ["Unreal Engine", "Blender", "Maya"],
+      requiredEvidence: ["Animation reel", "Previous FPS work", "Technical breakdown"],
+      tags: ["#reload-animations", "#first-person", "#animation"],
       salary: "$60k - $90k",
-      verified: true
+      verified: true,
+      isBrief: true
     },
     {
       id: 3,
-      title: "3D Environment Artist",
+      title: "Shader Programming - Jiggle Physics",
       company: "Artisan Games",
-      location: "Los Angeles, CA",
+      location: "Remote",
       type: "Contract",
       posted: "1 week ago",
-      description: "Create stunning environments for our upcoming fantasy RPG.",
-      requirements: ["Blender", "3D Modeling", "Portfolio"],
+      description: "Implement cloth and character jiggle physics using HLSL shaders",
+      role: "Technical Artist",
+      subRole: "Shader Programming",
+      deliverables: ["Jiggle physics shader system", "Performance optimized solution", "Integration documentation"],
+      tools: ["Unity", "HLSL", "Shader Graph"],
+      requiredEvidence: ["Shader portfolio", "Previous physics work", "Performance metrics"],
+      tags: ["#jiggle-physics", "#shaders", "#technical-art"],
       salary: "$50/hr",
-      verified: false
+      verified: false,
+      isBrief: true
     },
     {
       id: 4,
-      title: "Gameplay Programmer - Multiplayer",
+      title: "Senior Gameplay Programmer - Full-time",
       company: "Arena Games",
       location: "Remote",
       type: "Full-time",
       posted: "3 days ago",
       description: "Work on cutting-edge multiplayer systems for competitive shooter.",
-      requirements: ["Networking", "C++", "Unreal Engine"],
+      requirements: ["Networking", "C++", "Unreal Engine", "5+ years experience"],
       salary: "$90k - $130k",
-      verified: true
+      verified: true,
+      isBrief: false
     }
   ];
 
@@ -116,7 +135,10 @@ function JobListings() {
 
           <div className="jobs-list">
             {jobListings.map(job => (
-              <div key={job.id} className="job-card">
+              <div key={job.id} className={`job-card ${job.isBrief ? 'job-brief' : ''}`}>
+                {job.isBrief && (
+                  <div className="brief-badge">📋 Project Brief</div>
+                )}
                 <div className="job-card-header">
                   <div className="job-info">
                     <h2 className="job-title">{job.title}</h2>
@@ -133,16 +155,68 @@ function JobListings() {
                   )}
                 </div>
                 <p className="job-description">{job.description}</p>
-                <div className="job-requirements">
-                  {job.requirements.map((req, idx) => (
-                    <span key={idx} className="requirement-tag">{req}</span>
-                  ))}
-                </div>
+                
+                {job.isBrief ? (
+                  <>
+                    <div className="brief-details">
+                      <div className="brief-section">
+                        <h4 className="brief-label">Role Pack</h4>
+                        <div className="brief-role-info">
+                          <span className="brief-role">{job.role}</span>
+                          {job.subRole && <span className="brief-subrole"> • {job.subRole}</span>}
+                        </div>
+                      </div>
+                      
+                      <div className="brief-section">
+                        <h4 className="brief-label">Deliverables</h4>
+                        <ul className="brief-list">
+                          {job.deliverables.map((item, idx) => (
+                            <li key={idx}>{item}</li>
+                          ))}
+                        </ul>
+                      </div>
+                      
+                      <div className="brief-section">
+                        <h4 className="brief-label">Required Tools</h4>
+                        <div className="brief-tools">
+                          {job.tools.map((tool, idx) => (
+                            <span key={idx} className="tool-tag">{tool}</span>
+                          ))}
+                        </div>
+                      </div>
+                      
+                      <div className="brief-section">
+                        <h4 className="brief-label">Required Evidence</h4>
+                        <ul className="brief-list">
+                          {job.requiredEvidence.map((item, idx) => (
+                            <li key={idx}>{item}</li>
+                          ))}
+                        </ul>
+                      </div>
+                      
+                      <div className="brief-section">
+                        <h4 className="brief-label">Tags</h4>
+                        <div className="brief-tags">
+                          {job.tags.map((tag, idx) => (
+                            <span key={idx} className="tag">{tag}</span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <div className="job-requirements">
+                    {job.requirements && job.requirements.map((req, idx) => (
+                      <span key={idx} className="requirement-tag">{req}</span>
+                    ))}
+                  </div>
+                )}
+                
                 <div className="job-footer">
                   <div className="job-salary">{job.salary}</div>
                   <div className="job-actions">
                     <span className="job-posted">Posted {job.posted}</span>
-                    <button className="btn-primary">Apply</button>
+                    <button className="btn-primary">{job.isBrief ? 'Submit Proposal' : 'Apply'}</button>
                   </div>
                 </div>
               </div>
