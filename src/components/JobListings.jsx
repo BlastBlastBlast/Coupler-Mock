@@ -135,12 +135,12 @@ function JobListings() {
 
           <div className="jobs-list">
             {jobListings.map(job => (
-              <div key={job.id} className={`job-card ${job.isBrief ? 'job-brief' : ''}`}>
-                {job.isBrief && (
-                  <div className="brief-badge">📋 Project Brief</div>
-                )}
+              <div key={job.id} className={`job-card ${job.isBrief ? 'job-brief' : ''}`} style={{position: 'relative'}}>
                 <div className="job-card-header">
                   <div className="job-info">
+                    {job.isBrief && (
+                      <div className="brief-badge-inline">Project Brief</div>
+                    )}
                     <h2 className="job-title">{job.title}</h2>
                     <div className="job-meta">
                       <span className="job-company">{job.company}</span>
@@ -150,9 +150,11 @@ function JobListings() {
                       <span className="job-type">{job.type}</span>
                     </div>
                   </div>
-                  {job.verified && (
-                    <span className="badge-verified">✓ Verified Studio</span>
-                  )}
+                  <div className="job-header-badges">
+                    {job.verified && (
+                      <span className="badge-verified">✓ Verified Studio</span>
+                    )}
+                  </div>
                 </div>
                 <p className="job-description">{job.description}</p>
                 

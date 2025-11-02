@@ -365,24 +365,21 @@ function Portfolio() {
     switch (verificationLevel) {
       case 'system-verified':
         return {
-          text: 'Verified by System',
-          icon: '🔒',
-          className: 'verification-system',
+          text: 'System Verified',
+          className: 'status-badge verification-system',
           verifiedBy: verifiedBy
         };
       case 'peer-verified':
         return {
-          text: 'Verified by Peer',
-          icon: '✓',
-          className: 'verification-peer',
+          text: 'Peer Verified',
+          className: 'status-badge verification-peer',
           verifiedBy: verifiedBy
         };
       case 'unverified':
       default:
         return {
           text: 'Unverified',
-          icon: '⏳',
-          className: 'verification-unverified',
+          className: 'status-badge verification-unverified',
           verifiedBy: null
         };
     }
@@ -475,7 +472,7 @@ function Portfolio() {
 
         <div className="contributions-grid">
           {contributions.map(contribution => (
-            <div key={contribution.id} className={`contribution-card ${allExpanded ? 'expanded' : ''}`}>
+            <div key={contribution.id} className={`contribution-card ${allExpanded ? 'expanded' : ''}`} style={{position: 'relative'}}>
               {/* Header clickable area */}
               <div className="contribution-header-clickable" onClick={toggleAllCards}>
                 <div className="contribution-header">
@@ -489,9 +486,8 @@ function Portfolio() {
                     {(() => {
                       const verificationBadge = getVerificationBadge(contribution.verificationLevel, contribution.verifiedBy);
                       return (
-                        <span className={`verification-badge ${verificationBadge.className}`}>
-                          <span className="verification-icon">{verificationBadge.icon}</span>
-                          <span className="verification-text">{verificationBadge.text}</span>
+                        <span className={verificationBadge.className}>
+                          {verificationBadge.text}
                         </span>
                       );
                     })()}
@@ -548,9 +544,8 @@ function Portfolio() {
                     return (
                       <div className="verification-info">
                         <h4 className="detail-title">Verification Status</h4>
-                        <div className={`verification-status-detail ${verificationBadge.className}`}>
+                        <div className={`verification-status-detail ${verificationBadge.className.replace('status-badge ', '')}`}>
                           <div className="verification-detail-content">
-                            <div className="verification-detail-icon">{verificationBadge.icon}</div>
                             <div>
                               <div className="verification-detail-title">{verificationBadge.text}</div>
                               {contribution.verifiedBy && (
@@ -639,6 +634,33 @@ function Portfolio() {
               )}
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* Experience Timeline */}
+      <section className="timeline-section">
+        <h2 className="section-title">📅 Career Timeline</h2>
+        <p className="section-subtitle">Your journey through game development</p>
+        <div className="timeline-container">
+          {contributions
+            .sort((a, b) => b.year - a.year)
+            .map((contrib, idx) => (
+              <div key={contrib.id} className="timeline-item">
+                <div className="timeline-marker"></div>
+                <div className="timeline-content">
+                  <div className="timeline-year">{contrib.year}</div>
+                  <div className="timeline-project">
+                    <h4 className="timeline-title">{contrib.title}</h4>
+                    <p className="timeline-role">{contrib.role} • {contrib.type}</p>
+                    <div className="timeline-stats">
+                      {contrib.teamSize && <span>👥 {contrib.teamSize.split(' ')[0]}</span>}
+                      {contrib.duration && <span>⏱️ {contrib.duration}</span>}
+                      {contrib.players && <span>👥 {contrib.players} players</span>}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
         </div>
       </section>
 

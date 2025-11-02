@@ -10,6 +10,54 @@ function RecruiterSearch() {
     city: 'all'
   });
 
+  // Calculate keyword hits for a developer based on search query
+  const getKeywordHits = (dev, query) => {
+    if (!query || query.trim() === '') return { exact: [], related: [], score: 0 };
+    
+    const lowerQuery = query.toLowerCase().trim();
+    const queryWords = lowerQuery.split(/\s+/);
+    
+    const exact = [];
+    const related = [];
+    
+    // Check name
+    if (dev.name.toLowerCase().includes(lowerQuery)) {
+      exact.push('Name');
+    }
+    
+    // Check role
+    if (dev.role.toLowerCase().includes(lowerQuery)) {
+      exact.push('Role');
+    }
+    
+    // Check languages
+    dev.languages.forEach(lang => {
+      if (lang.toLowerCase() === lowerQuery || lang.toLowerCase().includes(lowerQuery)) {
+        exact.push(`Language: ${lang}`);
+      } else if (queryWords.some(word => lang.toLowerCase().includes(word))) {
+        related.push(`Language: ${lang}`);
+      }
+    });
+    
+    // Check specialties
+    dev.specialties.forEach(spec => {
+      if (spec.toLowerCase() === lowerQuery || spec.toLowerCase().includes(lowerQuery)) {
+        exact.push(`Specialty: ${spec}`);
+      } else if (queryWords.some(word => spec.toLowerCase().includes(word))) {
+        related.push(`Specialty: ${spec}`);
+      }
+    });
+    
+    // Check location
+    if (dev.location.toLowerCase().includes(lowerQuery)) {
+      related.push('Location');
+    }
+    
+    const score = exact.length * 3 + related.length;
+    
+    return { exact, related, score };
+  };
+
   const developers = [
     {
       id: 1,
@@ -19,7 +67,14 @@ function RecruiterSearch() {
       country: "Norway",
       city: "Oslo",
       verified: "system",
-      titlesShipped: 3,
+      metrics: {
+        titlesShipped: 3,
+        titlesInDevelopment: 2,
+        earlyAccessGames: 5,
+        workshopAssets: 12,
+        testContributions: 8,
+        gamesPublished: 3
+      },
       languages: ["C#", "C++", "Python"],
       specialties: ["Narrative Design", "Gameplay Programming"],
       avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Alex"
@@ -32,7 +87,14 @@ function RecruiterSearch() {
       country: "Germany",
       city: "Berlin",
       verified: "peer",
-      titlesShipped: 5,
+      metrics: {
+        titlesShipped: 5,
+        titlesInDevelopment: 1,
+        earlyAccessGames: 3,
+        workshopAssets: 25,
+        testContributions: 2,
+        gamesPublished: 5
+      },
       languages: ["HLSL", "Python"],
       specialties: ["3D Modeling", "Shader Programming"],
       avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah"
@@ -45,7 +107,14 @@ function RecruiterSearch() {
       country: "South Korea",
       city: "Seoul",
       verified: "system",
-      titlesShipped: 2,
+      metrics: {
+        titlesShipped: 2,
+        titlesInDevelopment: 3,
+        earlyAccessGames: 4,
+        workshopAssets: 8,
+        testContributions: 15,
+        gamesPublished: 2
+      },
       languages: ["C++", "C#"],
       specialties: ["Multiplayer", "Physics"],
       avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=James"
@@ -58,7 +127,14 @@ function RecruiterSearch() {
       country: "United Kingdom",
       city: "London",
       verified: "unverified",
-      titlesShipped: 1,
+      metrics: {
+        titlesShipped: 1,
+        titlesInDevelopment: 2,
+        earlyAccessGames: 2,
+        workshopAssets: 5,
+        testContributions: 3,
+        gamesPublished: 1
+      },
       languages: ["JavaScript", "C#"],
       specialties: ["UI Design", "Prototyping"],
       avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Emma"
@@ -195,6 +271,13 @@ function RecruiterSearch() {
                   if (selectedFilters.country !== 'all' && dev.country !== selectedFilters.country) return false;
                   if (selectedFilters.city !== 'all' && dev.city !== selectedFilters.city) return false;
                   if (selectedFilters.role !== 'all' && !dev.role.toLowerCase().includes(selectedFilters.role.toLowerCase())) return false;
+                  
+                  // Filter by search query
+                  if (searchQuery && searchQuery.trim() !== '') {
+                    const hits = getKeywordHits(dev, searchQuery);
+                    return hits.exact.length > 0 || hits.related.length > 0;
+                  }
+                  
                   return true;
                 }).length} developers found
               </span>
@@ -206,15 +289,28 @@ function RecruiterSearch() {
               </select>
             </div>
 
-            {developers.filter(dev => {
-              if (selectedFilters.country !== 'all' && dev.country !== selectedFilters.country) return false;
-              if (selectedFilters.city !== 'all' && dev.city !== selectedFilters.city) return false;
-              if (selectedFilters.role !== 'all' && !dev.role.toLowerCase().includes(selectedFilters.role.toLowerCase())) return false;
-              return true;
-            }).map(dev => {
-              const verification = getVerificationBadge(dev.verified);
-              return (
-                <div key={dev.id} className="developer-card">
+            {developers
+              .filter(dev => {
+                if (selectedFilters.country !== 'all' && dev.country !== selectedFilters.country) return false;
+                if (selectedFilters.city !== 'all' && dev.city !== selectedFilters.city) return false;
+                if (selectedFilters.role !== 'all' && !dev.role.toLowerCase().includes(selectedFilters.role.toLowerCase())) return false;
+                
+                // Filter by search query
+                if (searchQuery && searchQuery.trim() !== '') {
+                  const hits = getKeywordHits(dev, searchQuery);
+                  return hits.exact.length > 0 || hits.related.length > 0;
+                }
+                
+                return true;
+              })
+              .map(dev => {
+                const hits = getKeywordHits(dev, searchQuery);
+                const verification = getVerificationBadge(dev.verified);
+                return { dev, hits, verification };
+              })
+              .sort((a, b) => b.hits.score - a.hits.score)
+              .map(({ dev, hits, verification }) => (
+                <div key={dev.id} className="developer-card" style={{position: 'relative'}}>
                   <div className="developer-header">
                     <div className="developer-avatar">
                       <img src={dev.avatar} alt={dev.name} />
@@ -222,32 +318,105 @@ function RecruiterSearch() {
                         {verification.icon}
                       </span>
                     </div>
-                    <div className="developer-info">
-                      <h2 className="developer-name">{dev.name}</h2>
-                      <p className="developer-role">{dev.role}</p>
-                      <p className="developer-location">{dev.location}</p>
-                    </div>
-                    <div className="developer-stats">
-                      <div className="stat-item">
-                        <span className="stat-value">{dev.titlesShipped}</span>
-                        <span className="stat-label">Titles Shipped</span>
+                    <div className="developer-info-wrapper">
+                      <div className="developer-info">
+                        <h2 className="developer-name">{dev.name}</h2>
+                        <p className="developer-role">{dev.role}</p>
+                        <p className="developer-location">{dev.location}</p>
+                      </div>
+                      <div className="developer-stats-compact-horizontal">
+                        <div className="stat-item-compact">
+                          <span className="stat-label-compact">Shipped</span>
+                          <span className="stat-value-compact">{dev.metrics.titlesShipped}</span>
+                        </div>
+                        <div className="stat-item-compact">
+                          <span className="stat-label-compact">In Dev</span>
+                          <span className="stat-value-compact">{dev.metrics.titlesInDevelopment}</span>
+                        </div>
+                        <div className="stat-item-compact">
+                          <span className="stat-label-compact">Early Access</span>
+                          <span className="stat-value-compact">{dev.metrics.earlyAccessGames}</span>
+                        </div>
+                        <div className="stat-item-compact">
+                          <span className="stat-label-compact">Workshop</span>
+                          <span className="stat-value-compact">{dev.metrics.workshopAssets}</span>
+                        </div>
                       </div>
                     </div>
+                    {searchQuery && searchQuery.trim() !== '' && (
+                      <div className="developer-keyword-hits">
+                        {hits.exact.length > 0 && (
+                          <div className="keyword-hits-exact">
+                            <span className="keyword-hits-label">Exact:</span>
+                            <span className="keyword-hits-count">{hits.exact.length}</span>
+                          </div>
+                        )}
+                        {hits.related.length > 0 && (
+                          <div className="keyword-hits-related">
+                            <span className="keyword-hits-label">Related:</span>
+                            <span className="keyword-hits-count">{hits.related.length}</span>
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
                   
                   <div className="developer-skills">
                     <div className="skills-group">
                       <span className="skills-label">Languages:</span>
-                      {dev.languages.map((lang, idx) => (
-                        <span key={idx} className="skill-tag">{lang}</span>
-                      ))}
+                      {dev.languages.map((lang, idx) => {
+                        const isExactMatch = hits.exact.some(h => h.includes(`Language: ${lang}`));
+                        const isRelatedMatch = hits.related.some(h => h.includes(`Language: ${lang}`));
+                        return (
+                          <span 
+                            key={idx} 
+                            className={`skill-tag ${isExactMatch ? 'skill-match-exact' : isRelatedMatch ? 'skill-match-related' : ''}`}
+                          >
+                            {lang}
+                          </span>
+                        );
+                      })}
                     </div>
                     <div className="skills-group">
                       <span className="skills-label">Specialties:</span>
-                      {dev.specialties.map((spec, idx) => (
-                        <span key={idx} className="skill-tag specialty">{spec}</span>
-                      ))}
+                      {dev.specialties.map((spec, idx) => {
+                        const isExactMatch = hits.exact.some(h => h.includes(`Specialty: ${spec}`));
+                        const isRelatedMatch = hits.related.some(h => h.includes(`Specialty: ${spec}`));
+                        return (
+                          <span 
+                            key={idx} 
+                            className={`skill-tag specialty ${isExactMatch ? 'skill-match-exact' : isRelatedMatch ? 'skill-match-related' : ''}`}
+                          >
+                            {spec}
+                          </span>
+                        );
+                      })}
                     </div>
+                    
+                    {searchQuery && searchQuery.trim() !== '' && (hits.exact.length > 0 || hits.related.length > 0) && (
+                      <div className="keyword-matches-detail">
+                        {hits.exact.length > 0 && (
+                          <div className="matches-section">
+                            <span className="matches-label exact-label">Exact Matches:</span>
+                            <div className="matches-list">
+                              {hits.exact.map((hit, idx) => (
+                                <span key={idx} className="match-tag match-exact">{hit}</span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                        {hits.related.length > 0 && (
+                          <div className="matches-section">
+                            <span className="matches-label related-label">Related Matches:</span>
+                            <div className="matches-list">
+                              {hits.related.map((hit, idx) => (
+                                <span key={idx} className="match-tag match-related">{hit}</span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
 
                   <div className="developer-actions">
@@ -255,8 +424,7 @@ function RecruiterSearch() {
                     <button className="btn-primary">Contact</button>
                   </div>
                 </div>
-              );
-            })}
+              ))}
           </div>
         </div>
       </section>
