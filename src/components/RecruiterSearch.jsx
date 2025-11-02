@@ -1,6 +1,28 @@
 import React, { useState } from 'react';
 import '../App.css';
 
+// InfoAnnotation component
+function InfoAnnotation({ id, title, content, position, onClose, style }) {
+  const [isVisible, setIsVisible] = useState(true);
+  
+  if (!isVisible) return null;
+  
+  const handleClose = () => {
+    setIsVisible(false);
+    if (onClose) onClose(id);
+  };
+  
+  return (
+    <div className={`info-annotation ${position}`} style={style}>
+      <div className="info-annotation-header">
+        <div className="info-annotation-title">{title}</div>
+        <button className="info-annotation-close" onClick={handleClose}>×</button>
+      </div>
+      <div className="info-annotation-content">{content}</div>
+    </div>
+  );
+}
+
 function RecruiterSearch() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFilters, setSelectedFilters] = useState({
@@ -9,6 +31,11 @@ function RecruiterSearch() {
     country: 'all',
     city: 'all'
   });
+  const [dismissedAnnotations, setDismissedAnnotations] = useState(new Set());
+  
+  const handleDismissAnnotation = (id) => {
+    setDismissedAnnotations(prev => new Set([...prev, id]));
+  };
 
   // Calculate keyword hits for a developer based on search query
   const getKeywordHits = (dev, query) => {
@@ -160,15 +187,27 @@ function RecruiterSearch() {
           <p className="recruiter-subtitle">Search and filter verified game developers</p>
         </div>
 
-        <div className="search-bar-container">
-          <input
-            type="text"
-            className="search-input"
-            placeholder="Search by name, role, skills, or technologies..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <button className="search-button">🔍 Search</button>
+        <div className="search-bar-container" style={{position: 'relative'}}>
+          {!dismissedAnnotations.has('search-keyword-hit') && !searchQuery && (
+            <InfoAnnotation
+              id="search-keyword-hit"
+              title="Try a Search"
+              content="Try searching for a programming language or technology visible on screen, like 'C#' or 'Unity'. The keyword hit system shows exact matches (green) and related matches (blue), helping you find developers with specific skills."
+              position="annotation-bottom"
+              onClose={handleDismissAnnotation}
+              style={{top: '100%', left: '0', marginTop: '15px', zIndex: 1001, maxWidth: '350px'}}
+            />
+          )}
+          <div style={{display: 'flex', gap: '10px'}}>
+            <input
+              type="text"
+              className="search-input"
+              placeholder="Search by name, role, skills, or technologies..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <button className="search-button">🔍 Search</button>
+          </div>
         </div>
 
         <div className="recruiter-layout">

@@ -1,6 +1,28 @@
 import React, { useState } from 'react';
 import '../App.css';
 
+// InfoAnnotation component for reusable annotation boxes
+function InfoAnnotation({ id, title, content, position, onClose, style }) {
+  const [isVisible, setIsVisible] = useState(true);
+  
+  if (!isVisible) return null;
+  
+  const handleClose = () => {
+    setIsVisible(false);
+    if (onClose) onClose(id);
+  };
+  
+  return (
+    <div className={`info-annotation ${position}`} style={style}>
+      <div className="info-annotation-header">
+        <div className="info-annotation-title">{title}</div>
+        <button className="info-annotation-close" onClick={handleClose}>×</button>
+      </div>
+      <div className="info-annotation-content">{content}</div>
+    </div>
+  );
+}
+
 // Mock data
 const mockPortfolio = {
   user: {
@@ -356,6 +378,11 @@ const mockPortfolio = {
 function Portfolio() {
   const { user, metrics, contributions, technicalStack, githubRepos, artstationWork, threeDModels, techVideos, caseStudies } = mockPortfolio;
   const [allExpanded, setAllExpanded] = useState(false);
+  const [dismissedAnnotations, setDismissedAnnotations] = useState(new Set());
+  
+  const handleDismissAnnotation = (id) => {
+    setDismissedAnnotations(prev => new Set([...prev, id]));
+  };
 
   const toggleAllCards = () => {
     setAllExpanded(!allExpanded);
@@ -470,8 +497,19 @@ function Portfolio() {
           </div>
         </div>
 
-        <div className="contributions-grid">
-          {contributions.map(contribution => (
+        <div className="contributions-grid" style={{position: 'relative'}}>
+          {/* Expand annotation - outside the grid to avoid overflow issues */}
+          {!dismissedAnnotations.has('expand-contributions') && (
+            <InfoAnnotation
+              id="expand-contributions"
+              title="Expand Contributions"
+              content="Click anywhere on a contribution card to expand or collapse all cards at once. When expanded, you'll see detailed descriptions, metrics, artifacts, and proof links."
+              position="annotation-top"
+              onClose={handleDismissAnnotation}
+              style={{top: '-120px', left: '0', zIndex: 1001}}
+            />
+          )}
+          {contributions.map((contribution) => (
             <div key={contribution.id} className={`contribution-card ${allExpanded ? 'expanded' : ''}`} style={{position: 'relative'}}>
               {/* Header clickable area */}
               <div className="contribution-header-clickable" onClick={toggleAllCards}>
@@ -686,7 +724,17 @@ function Portfolio() {
       {/* GitHub Integration */}
       <section className="github-section">
         <h2 className="section-title">💻 GitHub Repositories</h2>
-        <div className="github-grid">
+        <div className="github-grid" style={{position: 'relative'}}>
+          {!dismissedAnnotations.has('github-section') && (
+            <InfoAnnotation
+              id="github-section"
+              title="GitHub Integration"
+              content="GitHub repositories are automatically pulled from your linked GitHub account. Click 'View on GitHub' to open repositories in a new browser tab, providing proof of your code contributions."
+              position="annotation-top"
+              onClose={handleDismissAnnotation}
+              style={{top: '-80px', left: '0', zIndex: 1001}}
+            />
+          )}
           {githubRepos.map(repo => (
             <div key={repo.id} className="github-card">
               <div className="github-header">
@@ -714,7 +762,17 @@ function Portfolio() {
       {/* ArtStation Portfolio */}
       <section className="artstation-section">
         <h2 className="section-title">🎨 ArtStation Portfolio</h2>
-        <div className="artstation-grid">
+        <div className="artstation-grid" style={{position: 'relative'}}>
+          {!dismissedAnnotations.has('artstation-section') && (
+            <InfoAnnotation
+              id="artstation-section"
+              title="ArtStation Integration"
+              content="ArtStation artwork is automatically pulled from your linked ArtStation account. Clicking on artwork cards opens your ArtStation portfolio in a new browser tab, showcasing your visual design work and game assets."
+              position="annotation-top"
+              onClose={handleDismissAnnotation}
+              style={{top: '-80px', left: '0', zIndex: 1001}}
+            />
+          )}
           {artstationWork.map(work => (
             <div key={work.id} className="artstation-card">
               <div className="artstation-image-container">

@@ -1,10 +1,37 @@
 import React, { useState } from 'react';
 import '../App.css';
 
+// InfoAnnotation component
+function InfoAnnotation({ id, title, content, position, onClose, style }) {
+  const [isVisible, setIsVisible] = useState(true);
+  
+  if (!isVisible) return null;
+  
+  const handleClose = () => {
+    setIsVisible(false);
+    if (onClose) onClose(id);
+  };
+  
+  return (
+    <div className={`info-annotation ${position}`} style={style}>
+      <div className="info-annotation-header">
+        <div className="info-annotation-title">{title}</div>
+        <button className="info-annotation-close" onClick={handleClose}>×</button>
+      </div>
+      <div className="info-annotation-content">{content}</div>
+    </div>
+  );
+}
+
 function UserDashboard() {
   const [selectedTab, setSelectedTab] = useState('profile');
   const [editingContribution, setEditingContribution] = useState(null);
   const [showAddForm, setShowAddForm] = useState(false);
+  const [dismissedAnnotations, setDismissedAnnotations] = useState(new Set());
+  
+  const handleDismissAnnotation = (id) => {
+    setDismissedAnnotations(prev => new Set([...prev, id]));
+  };
   const [formData, setFormData] = useState({
     title: '',
     type: 'Full Release',
@@ -68,21 +95,33 @@ function UserDashboard() {
   return (
     <main className="main-content">
       <section className="dashboard-section">
-        <div className="dashboard-header">
+        <div className="dashboard-header" style={{position: 'relative'}}>
           <h1 className="dashboard-title">My Dashboard</h1>
-          <div className="dashboard-tabs">
+          <div className="dashboard-tabs" style={{position: 'relative'}}>
             <button 
               className={`dashboard-tab ${selectedTab === 'profile' ? 'active' : ''}`}
               onClick={() => setSelectedTab('profile')}
             >
               Profile Settings
             </button>
-            <button 
-              className={`dashboard-tab ${selectedTab === 'contributions' ? 'active' : ''}`}
-              onClick={() => setSelectedTab('contributions')}
-            >
-              My Contributions
-            </button>
+            <div style={{position: 'relative', display: 'inline-block'}}>
+              {!dismissedAnnotations.has('my-contributions-tab') && selectedTab !== 'contributions' && (
+                <InfoAnnotation
+                  id="my-contributions-tab"
+                  title="Go to My Contributions"
+                  content="Click 'My Contributions' to view and edit your verified contributions. Here you can update your work history, add evidence, and improve verification status."
+                  position="annotation-bottom"
+                  onClose={handleDismissAnnotation}
+                  style={{top: '100%', left: '0', marginTop: '10px', zIndex: 1001, maxWidth: '300px'}}
+                />
+              )}
+              <button 
+                className={`dashboard-tab ${selectedTab === 'contributions' ? 'active' : ''}`}
+                onClick={() => setSelectedTab('contributions')}
+              >
+                My Contributions
+              </button>
+            </div>
             <button 
               className={`dashboard-tab ${selectedTab === 'connections' ? 'active' : ''}`}
               onClick={() => setSelectedTab('connections')}
@@ -154,7 +193,17 @@ function UserDashboard() {
           <div className="dashboard-content">
             {!editingContribution && !showAddForm && (
               <>
-                <div className="dashboard-card">
+                <div className="dashboard-card" style={{position: 'relative'}}>
+                  {!dismissedAnnotations.has('manage-contributions') && (
+                    <InfoAnnotation
+                      id="manage-contributions"
+                      title="Edit Contributions"
+                      content="Use the Edit button on any contribution to update your work history, add evidence (repos, videos, models), and improve verification status. Comprehensive documentation is required for system verification."
+                      position="annotation-top"
+                      onClose={handleDismissAnnotation}
+                      style={{top: '-100px', right: '0', zIndex: 1001, maxWidth: '320px'}}
+                    />
+                  )}
                   <h2 className="card-title">Manage Contributions</h2>
                   <p className="card-description">Review and edit your verified contributions. Comprehensive documentation is required for verification.</p>
                   
