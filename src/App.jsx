@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
 import './App.css';
+import Landing from './components/Landing';
 import Portfolio from './components/Portfolio';
 import UserDashboard from './components/UserDashboard';
 import JobListings from './components/JobListings';
@@ -18,7 +19,7 @@ function Header() {
     <header className="steam-header">
       <div className="header-content">
         <Link to="/" className="logo">
-          <img src="/Coupler_Transparent.png" alt="Coupler" className="logo-icon" />
+          <img src={`${import.meta.env.BASE_URL}Coupler_Transparent.png`} alt="Coupler" className="logo-icon" />
           <span className="logo-text">COUPLER</span>
         </Link>
         <nav className="header-nav">
@@ -34,24 +35,35 @@ function Header() {
 }
 
 function App() {
+  const location = useLocation();
+  const isLanding = location.pathname === '/';
+
   return (
-    <BrowserRouter>
-      <div className="app">
-        <Header />
-        <Routes>
-          <Route path="/" element={<Portfolio />} />
+    <div className="app">
+      {!isLanding && <Header />}
+      <Routes>
+          <Route path="/" element={<Landing />} />
           <Route path="/portfolio" element={<Portfolio />} />
           <Route path="/showcase" element={<Showcase />} />
           <Route path="/dashboard" element={<UserDashboard />} />
           <Route path="/jobs" element={<JobListings />} />
           <Route path="/recruiters" element={<RecruiterSearch />} />
-        </Routes>
+      </Routes>
+      {!isLanding && (
         <footer className="steam-footer">
           <p>© 2024 Coupler - Powered by Steam Ecosystem</p>
         </footer>
-      </div>
+      )}
+    </div>
+  );
+}
+
+function AppWithRouter() {
+  return (
+    <BrowserRouter>
+      <App />
     </BrowserRouter>
   );
 }
 
-export default App;
+export default AppWithRouter;
