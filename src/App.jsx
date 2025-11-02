@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import './App.css';
 import Landing from './components/Landing';
 import Portfolio from './components/Portfolio';
@@ -60,9 +60,9 @@ function App() {
 
 function AppWithRouter() {
   return (
-    <BrowserRouter>
+    <Router>
       <App />
-    </BrowserRouter>
+    </Router>
   );
 }
 
