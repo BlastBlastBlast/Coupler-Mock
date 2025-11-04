@@ -1,5 +1,7 @@
 # Coupler - Portfolio Generator for Steam Ecosystem
 
+### This mock is created with Cursor and is piloted, but heavily based on AI due to time constraints. However we felt this was the best way to create our soltuion validations.
+
 A Vite-based React mockup of a portfolio generator that extends the Steam ecosystem. This project demonstrates how verified Steam contributions can be displayed as professional portfolios.
 
 ## About Coupler
